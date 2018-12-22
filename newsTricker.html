@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="JS/jquery-3.2.0.js"></script>
+    <style>
+        body {
+          
+            font-family: Andalus;
+            font-size: x-large;
+            font-weight: bold;
+            background-color: lightgray;
+        }
+
+        [type=text], [type=button] {
+            font-family: Century 'MS Gothic';
+            font-size: large;
+        }
+        form {
+            margin:50px;
+        }
+
+        table {
+            width: 400px;
+        }
+
+        .c1 {
+            background-color: lightpink;
+        }
+
+        .c2 {
+            background-color: lightyellow;
+        }
+
+        .c3 {
+            background-color: lightskyblue;
+        }
+        .slidenews {
+            position: absolute;
+            list-style: none;
+            display: inline-block;
+            width: 100%;
+            height: 50px;
+            padding: 0;
+            margin: 0;
+            top:0;
+            left:0px;
+            background-color:rgb(8, 114, 114);
+            
+        }
+
+        .slidenews li {
+            position:relative;
+            display: inline-block;
+            height:80%;
+            margin:4px;
+            padding:2px;
+            color: rgb(104, 36, 36);
+          
+          
+        }
+    </style>
+    <script>
+        $(function () {
+            newbtn = $("#btn");
+            count=0;
+            newbtn.on("click", function () {
+                newnews = $("#newsTxt").val();
+                var newstypeSelect = $(":radio").filter(":checked").val();
+                $("#newsTbl").append("<tr class='c" + newstypeSelect + "'><td>" + newnews + "</td><td><a href='#'>DeLETE</a></td></tr>");
+                $(".slidenews").append("<li class='c" + newstypeSelect + "'>"+ newnews+"</li>");
+                  count++;
+            });
+            $("table:last").on("click", "a", function () {
+                $(this).parents("tr").remove();
+                var item = $(this).parent().prev().html();
+                $("li").each(function (index, elem){
+                 
+                    if ($(elem).text().indexOf(item) != -1) {
+                        $(elem).remove();
+                        
+                    }
+                })
+            });
+            $("#searchTxt").on("keyup", function () {
+                mytext = $(this).val().toLowerCase();
+                $("table:last td:even").each(function (index, elem) {
+                    
+                    // if ($(elem).text(":contains('" + mytext+"')"))
+                    if ($(elem).text().toLowerCase().indexOf(mytext) == -1) {
+                        $(elem).parent().hide();
+                    }
+                    else {
+                        $(elem).parent().show();
+                    }
+                });
+            })
+
+        })//end of loading page
+    </script>
+</head>
+<body>
+    <ul class="slidenews">
+     
+     
+    </ul>
+   
+    <form>
+         
+        <table>
+            <tr>
+                <td colspan="2">
+                    news type:
+                    <input type="radio" name="news" value="1" checked="checked" />sport
+                    <input type="radio" name="news" value="2" />Social
+                    <input type="radio" name="news" value="3" />Politic
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text" value="add here" id="newsTxt" /></td>
+                <td><input type="button" id="btn" value="add" /></td>
+            </tr>
+            <tr>
+                <td colspan="2">Search:<input type="text" id="searchTxt" /></td>
+            </tr>
+        </table>
+    </form>
+    <table id="newsTbl"></table>
+</body>
+</html>
